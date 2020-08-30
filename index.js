@@ -6,6 +6,8 @@ const app = express();
 var admin = require("firebase-admin");
 app.use(bodyParser.json());
 
+const PORT = process.env.PORT || 5000;
+
 var serviceAccount = require("./service_account.json");
 
 admin.initializeApp({
@@ -72,4 +74,4 @@ app.get("/health", async (req, res) => {
   res.send("200 MA DUDE");
 });
 
-app.listen(5000);
+app.listen(PORT);
