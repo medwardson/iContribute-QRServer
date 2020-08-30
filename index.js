@@ -53,7 +53,7 @@ app.get("/user", async (req, res) => {
 });
 
 app.post("/validate", async (req, res) => {
-  await firestore().collection("user").
+  // await firestore().collection("user")
 });
 
 app.listen(5000);
