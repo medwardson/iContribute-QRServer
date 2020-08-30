@@ -16,13 +16,39 @@ admin.initializeApp({
 const firestore = admin.firestore;
 
 app.get("/events", async (req, res) => {
-  console.log();
   const snapshot = await firestore().collection("events").get();
   let newList = [];
   snapshot.forEach(doc => {
     newList.push(doc.data());
   });
   res.send(newList);
+});
+
+app.post("/organizerEvents", async (req, res) => {
+  
+  console.log('req body email: ', req.body.email);
+  const snapshot = await firestore().collection("user").doc(req.body.email).get()
+  
+  let newList = [];
+  snapshot.data().event.forEach(doc => {
+    newList.push(doc);
+  });
+
+  let returnList = [];
+  // const ret = async () => {
+  // await newList.forEach(async (eventID) => {
+    await firestore().collection("events").doc(newList[0]).get().then(event => {
+      console.log(event.data())
+      returnList.push(event.data());
+    });
+  //   })
+  // })}
+
+  // ret();
+
+  console.log('return list: ', returnList);
+  console.log('newlist: ', newList);
+  res.send(returnList);
 });
 
 app.get("/user", async (req, res) => {
