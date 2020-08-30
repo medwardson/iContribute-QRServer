@@ -25,30 +25,21 @@ app.get("/events", async (req, res) => {
 });
 
 app.post("/organizerEvents", async (req, res) => {
-  
-  console.log('req body email: ', req.body.email);
-  const snapshot = await firestore().collection("user").doc(req.body.email).get()
-  
-  let newList = [];
-  snapshot.data().event.forEach(doc => {
-    newList.push(doc);
-  });
+  console.log("req body email: ", req.body.email);
+  const eventIDList = await (await firestore()
+    .collection("user")
+    .doc(req.body.email)
+    .get())
+    .get("event")
+    .valueOf();
+  console.log("eventID List: ", eventIDList);
 
-  let returnList = [];
-  // const ret = async () => {
-  // await newList.forEach(async (eventID) => {
-    await firestore().collection("events").doc(newList[0]).get().then(event => {
-      console.log(event.data())
-      returnList.push(event.data());
-    });
-  //   })
-  // })}
-
-  // ret();
-
-  console.log('return list: ', returnList);
-  console.log('newlist: ', newList);
-  res.send(returnList);
+  const eventData = [];
+  for (const id of eventIDList) {
+    const singleEvent = await firestore().collection("events").doc(id).get();
+    eventData.push(singleEvent.data());
+  }
+  res.send(eventData);
 });
 
 app.get("/user", async (req, res) => {
@@ -61,8 +52,8 @@ app.get("/user", async (req, res) => {
     .catch(e => res.error("error retrieving information"));
 });
 
-app.get("/validate", async (req, res) => {
-  // await firestore().collection("user").
+app.post("/validate", async (req, res) => {
+  await firestore().collection("user").
 });
 
 app.listen(5000);
