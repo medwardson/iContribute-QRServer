@@ -22,7 +22,6 @@ app.get("/events", async (req, res) => {
   snapshot.forEach(doc => {
     newList.push(doc.data());
   });
-  console.log("new list: ", newList);
   res.send(newList);
 });
 
@@ -34,6 +33,10 @@ app.get("/user", async (req, res) => {
       res.send(elements.docs[0].data());
     })
     .catch(e => res.error("error retrieving information"));
+});
+
+app.get("/validate", async (req, res) => {
+  // await firestore().collection("user").
 });
 
 app.listen(5000);
