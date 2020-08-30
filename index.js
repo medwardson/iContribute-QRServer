@@ -53,7 +53,23 @@ app.get("/user", async (req, res) => {
 });
 
 app.post("/validate", async (req, res) => {
-  // await firestore().collection("user")
+  const eventID = req.body.eventID;
+  const shiftIndex = req.body.shiftIndex;
+  const email = req.body.email;
+
+  const eventIDList = await (await firestore()
+    .collection("user")
+    .doc(req.body.email)
+    .get())
+    .get("event")
+    .valueOf();
+
+  if (!eventIDList.includes(eventID))
+    res.error("Sorry, you are not authorized to perform this action");
+});
+
+app.get("/health", async (req, res) => {
+  res.send("200 MA DUDE");
 });
 
 app.listen(5000);
