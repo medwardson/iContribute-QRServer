@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 if (process.env.NODE_ENV === "production") {
   admin.initializeApp({
     credential: admin.credential.cert(
-      JSON.parse(JSON.stringify(process.env.SERVICE_ACCOUNT))
+      JSON.parse(process.env.SERVICE_ACCOUNT)
     ),
     databaseURL: "https://icontribute2-dbf5e.firebaseio.com"
   });
