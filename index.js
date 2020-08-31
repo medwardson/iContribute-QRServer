@@ -8,8 +8,6 @@ app.use(bodyParser.json());
 
 const PORT = process.env.PORT || 5000;
 
-var serviceAccount = require("./service_account.json");
-
 if (process.env.NODE_ENV === "production") {
   admin.initializeApp({
     credential: admin.credential.cert(JSON.parse(process.env.SERVICE_ACCOUNT)),
@@ -17,7 +15,7 @@ if (process.env.NODE_ENV === "production") {
   });
 } else {
   admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
+    credential: admin.credential.cert(require("./service_account.json")),
     databaseURL: "https://icontribute2-dbf5e.firebaseio.com"
   });
 }
